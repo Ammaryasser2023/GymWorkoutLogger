@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/dashboardFragment">
+
+    <fragment
+        android:id="@+id/dashboardFragment"
+        android:name="com.example.gymworkoutlogger.ui.dashboard.DashboardFragment"
+        android:label="Home"
+        tools:layout="@layout/fragment_dashboard">
+        <action
+            android:id="@+id/action_dashboard_to_activeWorkout"
+            app:destination="@id/activeWorkoutFragment" />
+        <action
+            android:id="@+id/action_dashboard_to_detail"
+            app:destination="@id/workoutDetailFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/exerciseLibraryFragment"
+        android:name="com.example.gymworkoutlogger.ui.exercise.ExerciseLibraryFragment"
+        android:label="Exercises" />
+
+    <fragment
+        android:id="@+id/workoutHistoryFragment"
+        android:name="com.example.gymworkoutlogger.ui.history.WorkoutHistoryFragment"
+        android:label="History" />
+
+    <fragment
+        android:id="@+id/personalRecordsFragment"
+        android:name="com.example.gymworkoutlogger.ui.pr.PersonalRecordsFragment"
+        android:label="PRs" />
+
+    <fragment
+        android:id="@+id/activeWorkoutFragment"
+        android:name="com.example.gymworkoutlogger.ui.workout.ActiveWorkoutFragment"
+        android:label="Active Workout">
+        <argument
+            android:name="sessionId"
+            app:argType="long"
+            android:defaultValue="-1L" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/workoutDetailFragment"
+        android:name="com.example.gymworkoutlogger.ui.history.WorkoutDetailFragment"
+        android:label="Workout Detail">
+        <argument
+            android:name="sessionId"
+            app:argType="long" />
+    </fragment>
+
+</navigation>
