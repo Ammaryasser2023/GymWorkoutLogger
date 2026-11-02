@@ -7,15 +7,25 @@ import com.example.gymworkoutlogger.data.database.AppDatabase
 import com.example.gymworkoutlogger.data.repository.GymRepository
 import com.example.gymworkoutlogger.data.repository.GymRepositoryImpl
 import com.example.gymworkoutlogger.ui.dashboard.DashboardViewModel
+import com.example.gymworkoutlogger.ui.exercise.ExerciseViewModel
+import com.example.gymworkoutlogger.ui.history.HistoryViewModel
 
 class ViewModelFactory(private val repository: GymRepository) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DashboardViewModel::class.java)) {
-            return DashboardViewModel(repository) as T
+        return when {
+            modelClass.isAssignableFrom(DashboardViewModel::class.java) -> {
+                DashboardViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(HistoryViewModel::class.java) -> {
+                HistoryViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ExerciseViewModel::class.java) -> {
+                ExerciseViewModel(repository) as T
+            }
+            else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
-        throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
     }
 
     companion object {
