@@ -29,9 +29,10 @@
         android:label="History" />
 
     <fragment
-        android:id="@+id/personalRecordsFragment"
-        android:name="com.example.gymworkoutlogger.ui.pr.PersonalRecordsFragment"
-        android:label="PRs" />
+        android:id="@+id/profileFragment"
+        android:name="com.example.gymworkoutlogger.ui.profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
 
     <fragment
         android:id="@+id/activeWorkoutFragment"

@@ -13,7 +13,7 @@
         android:icon="@drawable/ic_history"
         android:title="@string/title_history" />
     <item
-        android:id="@+id/personalRecordsFragment"
-        android:icon="@drawable/ic_trophy"
-        android:title="@string/title_prs" />
+        android:id="@+id/profileFragment"
+        android:icon="@drawable/ic_person"
+        android:title="Profile" />
 </menu>

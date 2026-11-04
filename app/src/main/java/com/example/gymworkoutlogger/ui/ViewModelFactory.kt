@@ -9,8 +9,12 @@ import com.example.gymworkoutlogger.data.repository.GymRepositoryImpl
 import com.example.gymworkoutlogger.ui.dashboard.DashboardViewModel
 import com.example.gymworkoutlogger.ui.exercise.ExerciseViewModel
 import com.example.gymworkoutlogger.ui.history.HistoryViewModel
+import com.example.gymworkoutlogger.ui.profile.ProfileViewModel
 
-class ViewModelFactory(private val repository: GymRepository) : ViewModelProvider.Factory {
+class ViewModelFactory(
+    private val repository: GymRepository,
+    private val context: Context
+) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
@@ -23,6 +27,9 @@ class ViewModelFactory(private val repository: GymRepository) : ViewModelProvide
             }
             modelClass.isAssignableFrom(ExerciseViewModel::class.java) -> {
                 ExerciseViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
+                ProfileViewModel(repository, context) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }
@@ -37,7 +44,7 @@ class ViewModelFactory(private val repository: GymRepository) : ViewModelProvide
                 database.workoutSetDao(),
                 database.personalRecordDao()
             )
-            return ViewModelFactory(repository)
+            return ViewModelFactory(repository, context.applicationContext)
         }
     }
 }
