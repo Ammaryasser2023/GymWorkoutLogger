@@ -49,13 +49,11 @@
                             android:layout_width="96dp"
                             android:layout_height="96dp"
                             android:background="#33FFFFFF"
-                            android:padding="4dp"
                             android:scaleType="centerCrop"
                             android:src="@drawable/ic_person"
                             app:shapeAppearanceOverlay="@style/ShapeAppearance.Material3.Corner.Full"
                             app:strokeColor="@color/white"
-                            app:strokeWidth="2dp"
-                            app:tint="@color/white" />
+                            app:strokeWidth="2dp" />
 
                         <com.google.android.material.floatingactionbutton.FloatingActionButton
                             android:id="@+id/btnPickPfp"

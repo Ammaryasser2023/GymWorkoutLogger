@@ -167,13 +167,17 @@ class ProfileFragment : Fragment() {
     private fun loadProfilePicture(uriString: String?) {
         if (!uriString.isNullOrEmpty()) {
             try {
-                binding.ivProfilePicture.clearColorFilter()
+                binding.ivProfilePicture.imageTintList = null
                 binding.ivProfilePicture.setImageURI(Uri.parse(uriString))
             } catch (e: Exception) {
                 binding.ivProfilePicture.setImageResource(R.drawable.ic_person)
+                binding.ivProfilePicture.imageTintList =
+                    android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE)
             }
         } else {
             binding.ivProfilePicture.setImageResource(R.drawable.ic_person)
+            binding.ivProfilePicture.imageTintList =
+                android.content.res.ColorStateList.valueOf(android.graphics.Color.WHITE)
         }
     }
 
