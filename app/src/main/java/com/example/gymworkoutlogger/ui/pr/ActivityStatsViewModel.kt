@@ -43,8 +43,7 @@ class ActivityStatsViewModel(
         ) { sessionsWithSets, exercises ->
 
             val completedSessions = sessionsWithSets.filter { sessionWithSets ->
-                sessionWithSets.session.endTime != null ||
-                        sessionWithSets.sets.any { it.isCompleted }
+                sessionWithSets.sets.any { it.isCompleted }
             }
 
             val completedSets = completedSessions.flatMap { sessionWithSets ->
