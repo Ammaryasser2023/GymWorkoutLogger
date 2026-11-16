@@ -10,6 +10,8 @@ import com.example.gymworkoutlogger.ui.dashboard.DashboardViewModel
 import com.example.gymworkoutlogger.ui.exercise.ExerciseViewModel
 import com.example.gymworkoutlogger.ui.history.HistoryViewModel
 import com.example.gymworkoutlogger.ui.profile.ProfileViewModel
+import com.example.gymworkoutlogger.ui.pr.PersonalRecordsViewModel
+import com.example.gymworkoutlogger.ui.pr.ActivityStatsViewModel
 
 class ViewModelFactory(
     private val repository: GymRepository,
@@ -30,6 +32,12 @@ class ViewModelFactory(
             }
             modelClass.isAssignableFrom(ProfileViewModel::class.java) -> {
                 ProfileViewModel(repository, context) as T
+            }
+            modelClass.isAssignableFrom(PersonalRecordsViewModel::class.java) -> {
+                PersonalRecordsViewModel(repository) as T
+            }
+            modelClass.isAssignableFrom(ActivityStatsViewModel::class.java) -> {
+                ActivityStatsViewModel(repository) as T
             }
             else -> throw IllegalArgumentException("Unknown ViewModel class: ${modelClass.name}")
         }

@@ -27,7 +27,8 @@ class ProfileViewModel(
 
     val personalRecords: StateFlow<List<PersonalRecordWithExercise>> =
         repository.getAllPersonalRecords()
-            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000),
+                emptyList())
 
     fun updateUserName(newName: String) {
         val trimmed = newName.trim()

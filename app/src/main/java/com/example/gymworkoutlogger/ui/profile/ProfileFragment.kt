@@ -21,6 +21,8 @@ import com.example.gymworkoutlogger.ui.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
+import com.example.gymworkoutlogger.ui.pr.PersonalRecordsViewModel
+import com.example.gymworkoutlogger.ui.pr.ActivityStatsViewModel
 
 class ProfileFragment : Fragment() {
 
@@ -28,6 +30,14 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
+    private val personalRecordsViewModel: PersonalRecordsViewModel by viewModels {
+        ViewModelFactory.getInstance(requireContext())
+    }
+
+    private val activityStatsViewModel: ActivityStatsViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -137,32 +147,89 @@ class ProfileFragment : Fragment() {
             .show()
     }
 
+
     private fun observeViewModel() {
+
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+
+                // Observe Profile Name
                 launch {
                     viewModel.userName.collect { name ->
                         binding.tvUserName.text = name.ifEmpty { "Athlete" }
                     }
                 }
 
+                // Observe Profile Picture
                 launch {
                     viewModel.profileImageUri.collect { uriString ->
                         loadProfilePicture(uriString)
                     }
                 }
 
+                // Observe Personal Records
                 launch {
-                    viewModel.personalRecords.collect { prs ->
+                    personalRecordsViewModel.personalRecords.collect { prs ->
+
                         prAdapter.submitList(prs)
-                        binding.tvEmptyPrs.visibility = if (prs.isEmpty()) View.VISIBLE else View.GONE
-                        binding.rvProfilePrs.visibility = if (prs.isEmpty()) View.GONE else View.VISIBLE
-                        binding.tvProfileStatsSummary.text = "You have achieved ${prs.size} Personal Records across your training!"
+
+                        binding.tvEmptyPrs.visibility =
+                            if (prs.isEmpty()) View.VISIBLE else View.GONE
+
+                        binding.rvProfilePrs.visibility =
+                            if (prs.isEmpty()) View.GONE else View.VISIBLE
+                    }
+                }
+
+                // Observe Activity Statistics
+                launch {
+                    activityStatsViewModel.stats.collect { stats ->
+
+                        binding.tvTotalWorkouts.text =
+                            stats.totalWorkouts.toString()
+
+                        binding.tvTotalSets.text =
+                            stats.totalSets.toString()
+
+                        binding.tvTotalVolume.text = getString(
+                            R.string.stats_volume_value,
+                            stats.totalVolume
+                        )
+
+                        binding.tvActiveDays.text =
+                            stats.activeDays.toString()
+
+                        binding.tvWeeklyActivity.text =
+                            if (stats.weeklyActivity.all { it.workoutCount == 0 }) {
+                                getString(R.string.stats_no_activity)
+                            } else {
+                                stats.weeklyActivity.joinToString("\n") {
+                                    getString(
+                                        R.string.stats_weekly_day,
+                                        it.day,
+                                        it.workoutCount
+                                    )
+                                }
+                            }
+
+                        binding.tvMostTrainedExercises.text =
+                            if (stats.mostTrainedExercises.isEmpty()) {
+                                getString(R.string.stats_no_exercises)
+                            } else {
+                                stats.mostTrainedExercises.joinToString("\n") {
+                                    getString(
+                                        R.string.stats_exercise_count,
+                                        it.exerciseName,
+                                        it.setCount
+                                    )
+                                }
+                            }
                     }
                 }
             }
         }
     }
+
 
     private fun loadProfilePicture(uriString: String?) {
         if (!uriString.isNullOrEmpty()) {
