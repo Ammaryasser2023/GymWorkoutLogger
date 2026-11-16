@@ -371,14 +371,13 @@
                             android:textAppearance="?attr/textAppearanceTitleMedium"
                             android:textStyle="bold"/>
 
-                        <TextView
-                            android:id="@+id/tvWeeklyActivity"
+                        <!-- Weekly Activity Chart -->
+                        <LinearLayout
+                            android:id="@+id/weeklyActivityChart"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginTop="12dp"
-                            android:text="@string/stats_no_activity"
-                            android:textAppearance="?attr/textAppearanceBodyMedium"
-                            android:lineSpacingExtra="8dp"/>
+                            android:layout_marginTop="16dp"
+                            android:orientation="vertical" />
 
                     </LinearLayout>
                 </com.google.android.material.card.MaterialCardView>
