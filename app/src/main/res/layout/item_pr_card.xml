@@ -20,6 +20,7 @@
         <ImageView
             android:layout_width="28dp"
             android:layout_height="28dp"
+            android:contentDescription="PR Icon"
             android:src="@drawable/ic_trophy"
             app:tint="@color/purple_500" />
 
@@ -39,9 +40,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
-            android:text="100 kg"
+            android:text="100.0 kg"
             android:textAppearance="?attr/textAppearanceTitleLarge"
-            android:textColor="@color/purple_700"
+            android:textColor="@color/purple_200"
             android:textStyle="bold" />
 
         <TextView

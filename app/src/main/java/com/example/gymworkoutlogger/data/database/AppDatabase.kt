@@ -51,6 +51,11 @@ abstract class AppDatabase : RoomDatabase() {
                     .addCallback(DatabaseCallback())
                     .build()
                 INSTANCE = instance
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    seedInitialDataIfEmpty(instance)
+                }
+
                 instance
             }
         }
@@ -60,26 +65,39 @@ abstract class AppDatabase : RoomDatabase() {
                 super.onCreate(db)
                 INSTANCE?.let { database ->
                     CoroutineScope(Dispatchers.IO).launch {
-                        populateInitialExercises(database.exerciseDao())
+                        seedInitialDataIfEmpty(database)
                     }
                 }
             }
+        }
 
-            suspend fun populateInitialExercises(exerciseDao: ExerciseDao) {
+        private suspend fun seedInitialDataIfEmpty(database: AppDatabase) {
+            val exerciseDao = database.exerciseDao()
+            val prDao = database.personalRecordDao()
+
+            if (exerciseDao.getExerciseById(1) == null) {
                 val initialExercises = listOf(
-                    Exercise(name = "Barbell Bench Press", category = "Chest", notes = "Compound upper body push exercise"),
-                    Exercise(name = "Incline Dumbbell Press", category = "Chest", notes = "Targets upper pectoral muscles"),
-                    Exercise(name = "Barbell Squat", category = "Legs", notes = "Compound lower body exercise"),
-                    Exercise(name = "Romanian Deadlift", category = "Legs", notes = "Targets hamstrings and glutes"),
-                    Exercise(name = "Barbell Deadlift", category = "Back", notes = "Posterior chain compound lift"),
-                    Exercise(name = "Lat Pulldown", category = "Back", notes = "Upper back and latissimus dorsi"),
-                    Exercise(name = "Overhead Shoulder Press", category = "Shoulders", notes = "Barbell shoulder push exercise"),
-                    Exercise(name = "Dumbbell Lateral Raise", category = "Shoulders", notes = "Isolation for side deltoids"),
-                    Exercise(name = "Barbell Bicep Curl", category = "Arms", notes = "Bicep isolation lift"),
-                    Exercise(name = "Tricep Rope Pushdown", category = "Arms", notes = "Tricep isolation exercise"),
-                    Exercise(name = "Plank", category = "Core", notes = "Isometric core stability exercise")
+                    Exercise(id = 1, name = "Barbell Bench Press", category = "Chest", notes = "Compound upper body push exercise"),
+                    Exercise(id = 2, name = "Incline Dumbbell Press", category = "Chest", notes = "Targets upper pectoral muscles"),
+                    Exercise(id = 3, name = "Barbell Squat", category = "Legs", notes = "Compound lower body exercise"),
+                    Exercise(id = 4, name = "Romanian Deadlift", category = "Legs", notes = "Targets hamstrings and glutes"),
+                    Exercise(id = 5, name = "Barbell Deadlift", category = "Back", notes = "Posterior chain compound lift"),
+                    Exercise(id = 6, name = "Lat Pulldown", category = "Back", notes = "Upper back and latissimus dorsi"),
+                    Exercise(id = 7, name = "Overhead Shoulder Press", category = "Shoulders", notes = "Barbell shoulder push exercise"),
+                    Exercise(id = 8, name = "Dumbbell Lateral Raise", category = "Shoulders", notes = "Isolation for side deltoids"),
+                    Exercise(id = 9, name = "Barbell Bicep Curl", category = "Arms", notes = "Bicep isolation lift"),
+                    Exercise(id = 10, name = "Tricep Rope Pushdown", category = "Arms", notes = "Tricep isolation exercise"),
+                    Exercise(id = 11, name = "Plank", category = "Core", notes = "Isometric core stability exercise")
                 )
                 initialExercises.forEach { exerciseDao.insert(it) }
+            }
+
+            if (prDao.getPrForExercise(1) == null) {
+                val now = System.currentTimeMillis()
+                prDao.insertOrUpdate(PersonalRecord(exerciseId = 1L, maxWeightKg = 100.0, maxReps = 5, achievedTimestamp = now))
+                prDao.insertOrUpdate(PersonalRecord(exerciseId = 3L, maxWeightKg = 140.0, maxReps = 3, achievedTimestamp = now))
+                prDao.insertOrUpdate(PersonalRecord(exerciseId = 5L, maxWeightKg = 180.0, maxReps = 1, achievedTimestamp = now))
+                prDao.insertOrUpdate(PersonalRecord(exerciseId = 7L, maxWeightKg = 65.0, maxReps = 5, achievedTimestamp = now))
             }
         }
     }
