@@ -9,8 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.gymworkoutlogger.data.entity.WorkoutSet
 import com.example.gymworkoutlogger.databinding.ItemDetailExerciseSetBinding
 
+data class DetailSetItem(
+    val set: WorkoutSet,
+    val exerciseName: String,
+    val category: String
+)
+
 class WorkoutDetailAdapter :
-    ListAdapter<WorkoutSet, WorkoutDetailAdapter.ViewHolder>(DiffCallback) {
+    ListAdapter<DetailSetItem, WorkoutDetailAdapter.ViewHolder>(DiffCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val binding = ItemDetailExerciseSetBinding.inflate(
@@ -26,7 +32,9 @@ class WorkoutDetailAdapter :
     inner class ViewHolder(private val binding: ItemDetailExerciseSetBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
-        fun bind(set: WorkoutSet) {
+        fun bind(item: DetailSetItem) {
+            val set = item.set
+            binding.tvDetailExerciseName.text = if (item.category.isNotEmpty()) "${item.exerciseName} (${item.category})" else item.exerciseName
             binding.tvSetNumber.text = set.setNumber.toString()
             binding.tvSetWeightReps.text = "${set.weightKg} kg  ×  ${set.reps} reps"
             val volume = (set.weightKg * set.reps).toInt()
@@ -35,11 +43,11 @@ class WorkoutDetailAdapter :
         }
     }
 
-    companion object DiffCallback : DiffUtil.ItemCallback<WorkoutSet>() {
-        override fun areItemsTheSame(oldItem: WorkoutSet, newItem: WorkoutSet): Boolean =
-            oldItem.id == newItem.id
+    companion object DiffCallback : DiffUtil.ItemCallback<DetailSetItem>() {
+        override fun areItemsTheSame(oldItem: DetailSetItem, newItem: DetailSetItem): Boolean =
+            oldItem.set.id == newItem.set.id
 
-        override fun areContentsTheSame(oldItem: WorkoutSet, newItem: WorkoutSet): Boolean =
+        override fun areContentsTheSame(oldItem: DetailSetItem, newItem: DetailSetItem): Boolean =
             oldItem == newItem
     }
 }

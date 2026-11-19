@@ -3,6 +3,7 @@ package com.example.gymworkoutlogger.ui.history
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.gymworkoutlogger.data.entity.Exercise
 import com.example.gymworkoutlogger.data.entity.WorkoutSession
 import com.example.gymworkoutlogger.data.relation.WorkoutSessionWithSets
 import com.example.gymworkoutlogger.data.repository.GymRepository
@@ -21,6 +22,9 @@ class HistoryViewModel(private val repository: GymRepository) : ViewModel() {
 
     private val _selectedDateFilter = MutableStateFlow<Long?>(null)
     val selectedDateFilter: StateFlow<Long?> = _selectedDateFilter.asStateFlow()
+
+    val allExercises: StateFlow<List<Exercise>> = repository.getAllExercises()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
 
     val filteredSessions: StateFlow<List<WorkoutSessionWithSets>> = combine(
         repository.getAllSessionsWithSets(),

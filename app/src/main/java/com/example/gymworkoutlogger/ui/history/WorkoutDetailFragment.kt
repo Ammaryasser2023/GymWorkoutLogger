@@ -15,6 +15,7 @@ import androidx.navigation.fragment.findNavController
 import com.example.gymworkoutlogger.databinding.FragmentWorkoutDetailBinding
 import com.example.gymworkoutlogger.ui.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -62,10 +63,14 @@ class WorkoutDetailFragment : Fragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                viewModel.getSessionWithSets(currentSessionId).collect { sessionWithSets ->
+                combine(
+                    viewModel.getSessionWithSets(currentSessionId),
+                    viewModel.allExercises
+                ) { sessionWithSets, exercises ->
                     if (sessionWithSets != null) {
                         val session = sessionWithSets.session
                         val sets = sessionWithSets.sets
+                        val exerciseMap = exercises.associateBy { it.id }
 
                         binding.tvDetailTitle.text = session.title
                         val dateFormat = SimpleDateFormat("EEEE, MMM dd, yyyy", Locale.getDefault())
@@ -75,11 +80,19 @@ class WorkoutDetailFragment : Fragment() {
                         val totalVolume = sets.sumOf { it.weightKg * it.reps }.toInt()
                         binding.tvTotalVolume.text = "$totalVolume kg"
 
-                        detailAdapter.submitList(sets)
+                        val detailItems = sets.map { set ->
+                            val ex = exerciseMap[set.exerciseId]
+                            DetailSetItem(
+                                set = set,
+                                exerciseName = ex?.name ?: "Exercise",
+                                category = ex?.category ?: ""
+                            )
+                        }
+                        detailAdapter.submitList(detailItems)
 
                         setupActions(sessionWithSets)
                     }
-                }
+                }.collect {}
             }
         }
     }

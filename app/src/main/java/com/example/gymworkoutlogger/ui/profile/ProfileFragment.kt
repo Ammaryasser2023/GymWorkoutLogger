@@ -160,6 +160,16 @@ class ProfileFragment : Fragment() {
                         binding.rvProfilePrs.visibility = if (prs.isEmpty()) View.GONE else View.VISIBLE
                     }
                 }
+
+                launch {
+                    viewModel.activityStats.collect { stats ->
+                        binding.tvTotalWorkouts.text = stats.totalWorkouts.toString()
+                        binding.tvTotalSets.text = stats.totalSets.toString()
+                        binding.tvTotalVolume.text = "${stats.totalVolumeKg} kg"
+                        binding.tvActiveDays.text = stats.activeDaysCount.toString()
+                        binding.tvMostTrainedExercises.text = stats.topExercisesText
+                    }
+                }
             }
         }
     }

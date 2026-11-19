@@ -5,63 +5,80 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
-    android:layout_marginVertical="4dp"
-    app:cardCornerRadius="10dp"
-    app:cardElevation="1dp"
+    android:layout_marginVertical="6dp"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="2dp"
     app:strokeWidth="1dp"
     app:strokeColor="#1F000000">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp">
+        android:padding="16dp">
 
+        <!-- Exercise Name & Category -->
         <TextView
-            android:id="@+id/tvSetNumber"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:background="@drawable/bg_circle_primary"
-            android:gravity="center"
-            android:text="1"
-            android:textAppearance="?attr/textAppearanceBodyMedium"
+            android:id="@+id/tvDetailExerciseName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Barbell Bench Press (Chest)"
+            android:textAppearance="?attr/textAppearanceTitleMedium"
             android:textColor="@color/white"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/tvSetStatus"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
+        <!-- Set Number Badge -->
+        <TextView
+            android:id="@+id/tvSetNumber"
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/bg_circle_primary"
+            android:gravity="center"
+            android:text="1"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvDetailExerciseName" />
+
+        <!-- Weight & Reps -->
         <TextView
             android:id="@+id/tvSetWeightReps"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
+            android:layout_marginStart="10dp"
             android:text="80 kg  ×  10 reps"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@id/tvSetNumber"
             app:layout_constraintEnd_toStartOf="@id/tvSetStatus"
             app:layout_constraintStart_toEndOf="@id/tvSetNumber"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="@id/tvSetNumber" />
 
+        <!-- Volume -->
         <TextView
             android:id="@+id/tvSetVolume"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="6dp"
             android:text="Volume: 800 kg"
             android:textAppearance="?attr/textAppearanceBodySmall"
             android:textColor="?android:attr/textColorSecondary"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/tvSetNumber"
-            app:layout_constraintTop_toBottomOf="@id/tvSetWeightReps" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvSetNumber" />
 
+        <!-- Status -->
         <TextView
             android:id="@+id/tvSetStatus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Completed ✓"
             android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="@color/purple_700"
+            android:textColor="@color/purple_500"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
