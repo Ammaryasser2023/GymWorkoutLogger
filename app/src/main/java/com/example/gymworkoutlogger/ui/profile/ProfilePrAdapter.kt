@@ -1,3 +1,4 @@
+// Member 5: Profile PR List Adapter
 package com.example.gymworkoutlogger.ui.profile
 
 import android.view.LayoutInflater

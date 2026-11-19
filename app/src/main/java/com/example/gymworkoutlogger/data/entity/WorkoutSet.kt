@@ -1,3 +1,4 @@
+// Member 1: Workout Set Entity
 package com.example.gymworkoutlogger.data.entity
 
 import androidx.room.ColumnInfo

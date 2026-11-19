@@ -1,3 +1,4 @@
+// Member 1: Exercise to Sets Relation
 package com.example.gymworkoutlogger.data.relation
 
 import androidx.room.Embedded

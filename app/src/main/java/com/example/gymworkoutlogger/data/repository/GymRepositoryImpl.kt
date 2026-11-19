@@ -1,3 +1,4 @@
+// Member 1: Gym Repository Implementation
 package com.example.gymworkoutlogger.data.repository
 
 import com.example.gymworkoutlogger.data.dao.ExerciseDao

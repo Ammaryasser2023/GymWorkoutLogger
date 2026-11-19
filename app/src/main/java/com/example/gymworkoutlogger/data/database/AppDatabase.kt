@@ -1,3 +1,4 @@
+// Member 1: Main Room Database Setup & Pre-population
 package com.example.gymworkoutlogger.data.database
 
 import android.content.Context
@@ -52,6 +53,7 @@ abstract class AppDatabase : RoomDatabase() {
                     .build()
                 INSTANCE = instance
 
+                // Seed initial data if empty
                 CoroutineScope(Dispatchers.IO).launch {
                     seedInitialDataIfEmpty(instance)
                 }

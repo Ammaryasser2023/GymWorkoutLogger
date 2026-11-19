@@ -1,3 +1,4 @@
+// Member 4: Workout History Adapter
 package com.example.gymworkoutlogger.ui.history
 
 import android.view.LayoutInflater

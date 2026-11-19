@@ -1,3 +1,4 @@
+// Member 1: PR to Exercise Relation
 package com.example.gymworkoutlogger.data.relation
 
 import androidx.room.Embedded

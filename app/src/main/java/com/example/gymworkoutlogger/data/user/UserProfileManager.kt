@@ -1,3 +1,4 @@
+// Member 5: User Profile Preferences
 package com.example.gymworkoutlogger.data.user
 
 import android.content.Context

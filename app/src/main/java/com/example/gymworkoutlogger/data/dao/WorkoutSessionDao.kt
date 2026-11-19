@@ -1,3 +1,4 @@
+// Member 1: Workout Session DAO
 package com.example.gymworkoutlogger.data.dao
 
 import androidx.room.Dao

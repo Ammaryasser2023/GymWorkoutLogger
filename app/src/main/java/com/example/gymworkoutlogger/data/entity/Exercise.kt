@@ -1,3 +1,4 @@
+// Member 1: Exercise Entity
 package com.example.gymworkoutlogger.data.entity
 
 import androidx.room.Entity

@@ -1,3 +1,4 @@
+// Member 2: Add & Edit Exercise Dialog Fragment
 package com.example.gymworkoutlogger.ui.exercise
 
 import android.app.Dialog

@@ -1,3 +1,4 @@
+// Member 2: Exercise Library ViewModel
 package com.example.gymworkoutlogger.ui.exercise
 
 import androidx.lifecycle.ViewModel

@@ -1,3 +1,4 @@
+// Member 5: Profile & Personal Records Screen
 package com.example.gymworkoutlogger.ui.profile
 
 import android.content.Intent
@@ -21,15 +22,6 @@ import com.example.gymworkoutlogger.ui.ViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
-import com.example.gymworkoutlogger.ui.pr.PersonalRecordsViewModel
-import com.example.gymworkoutlogger.ui.pr.ActivityStatsViewModel
-import android.graphics.Color
-import android.view.Gravity
-import android.widget.LinearLayout
-import android.widget.ProgressBar
-import android.widget.TextView
-import androidx.core.content.ContextCompat
-
 
 class ProfileFragment : Fragment() {
 
@@ -37,14 +29,6 @@ class ProfileFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ProfileViewModel by viewModels {
-        ViewModelFactory.getInstance(requireContext())
-    }
-
-    private val personalRecordsViewModel: PersonalRecordsViewModel by viewModels {
-        ViewModelFactory.getInstance(requireContext())
-    }
-
-    private val activityStatsViewModel: ActivityStatsViewModel by viewModels {
         ViewModelFactory.getInstance(requireContext())
     }
 
@@ -129,111 +113,6 @@ class ProfileFragment : Fragment() {
         })
     }
 
-    private fun renderWeeklyActivity(
-        weeklyActivity: List<com.example.gymworkoutlogger.ui.pr.DailyActivity>
-    ) {
-        val chart = binding.weeklyActivityChart
-
-        // Remove previous chart views
-        chart.removeAllViews()
-
-        // Show empty message if there is no activity
-        if (weeklyActivity.all { it.workoutCount == 0 }) {
-            val emptyText = TextView(requireContext()).apply {
-                text = getString(R.string.stats_no_activity)
-                textSize = 14f
-            }
-
-            chart.addView(emptyText)
-            return
-        }
-
-        val maxWorkouts = weeklyActivity.maxOf { it.workoutCount }
-
-        weeklyActivity.forEach { activity ->
-
-            // Create horizontal row
-            val row = LinearLayout(requireContext()).apply {
-                orientation = LinearLayout.HORIZONTAL
-                gravity = Gravity.CENTER_VERTICAL
-            }
-
-            // Day name
-            val dayText = TextView(requireContext()).apply {
-                text = activity.day
-                textSize = 12f
-            }
-
-            row.addView(
-                dayText,
-                LinearLayout.LayoutParams(
-                    dp(40),
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            )
-
-            // Progress bar
-            val progressBar = ProgressBar(
-                requireContext(),
-                null,
-                android.R.attr.progressBarStyleHorizontal
-            ).apply {
-                max = maxWorkouts
-                progress = activity.workoutCount
-                isIndeterminate = false
-
-                progressTintList = android.content.res.ColorStateList.valueOf(
-                    ContextCompat.getColor(
-                        requireContext(),
-                        R.color.purple_500
-                    )
-                )
-
-                progressBackgroundTintList =
-                    android.content.res.ColorStateList.valueOf(
-                        Color.LTGRAY
-                    )
-            }
-
-            val progressParams = LinearLayout.LayoutParams(
-                0,
-                dp(8),
-                1f
-            ).apply {
-                marginStart = dp(8)
-                marginEnd = dp(8)
-            }
-
-            row.addView(progressBar, progressParams)
-
-            // Workout count
-            val countText = TextView(requireContext()).apply {
-                text = activity.workoutCount.toString()
-                textSize = 12f
-            }
-
-            row.addView(
-                countText,
-                LinearLayout.LayoutParams(
-                    dp(24),
-                    LinearLayout.LayoutParams.WRAP_CONTENT
-                )
-            )
-
-            // Add row to chart
-            val rowParams = LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                dp(32)
-            )
-
-            chart.addView(row, rowParams)
-        }
-    }
-
-    private fun dp(value: Int): Int {
-        return (value * resources.displayMetrics.density).toInt()
-    }
-
     private fun showEditNameDialog(currentName: String) {
         val input = EditText(requireContext()).apply {
             setText(currentName)
@@ -259,78 +138,31 @@ class ProfileFragment : Fragment() {
             .show()
     }
 
-
     private fun observeViewModel() {
-
         viewLifecycleOwner.lifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
-
-                // Observe Profile Name
                 launch {
                     viewModel.userName.collect { name ->
                         binding.tvUserName.text = name.ifEmpty { "Athlete" }
                     }
                 }
 
-                // Observe Profile Picture
                 launch {
                     viewModel.profileImageUri.collect { uriString ->
                         loadProfilePicture(uriString)
                     }
                 }
 
-                // Observe Personal Records
                 launch {
-                    personalRecordsViewModel.personalRecords.collect { prs ->
-
+                    viewModel.personalRecords.collect { prs ->
                         prAdapter.submitList(prs)
-
-                        binding.tvEmptyPrs.visibility =
-                            if (prs.isEmpty()) View.VISIBLE else View.GONE
-
-                        binding.rvProfilePrs.visibility =
-                            if (prs.isEmpty()) View.GONE else View.VISIBLE
-                    }
-                }
-
-                // Observe Activity Statistics
-                launch {
-                    activityStatsViewModel.stats.collect { stats ->
-
-                        binding.tvTotalWorkouts.text =
-                            stats.totalWorkouts.toString()
-
-                        binding.tvTotalSets.text =
-                            stats.totalSets.toString()
-
-                        binding.tvTotalVolume.text = getString(
-                            R.string.stats_volume_value,
-                            stats.totalVolume
-                        )
-
-                        binding.tvActiveDays.text =
-                            stats.activeDays.toString()
-
-                        renderWeeklyActivity(stats.weeklyActivity)
-
-                        binding.tvMostTrainedExercises.text =
-                            if (stats.mostTrainedExercises.isEmpty()) {
-                                getString(R.string.stats_no_exercises)
-                            } else {
-                                stats.mostTrainedExercises.joinToString("\n") {
-                                    getString(
-                                        R.string.stats_exercise_count,
-                                        it.exerciseName,
-                                        it.setCount
-                                    )
-                                }
-                            }
+                        binding.tvEmptyPrs.visibility = if (prs.isEmpty()) View.VISIBLE else View.GONE
+                        binding.rvProfilePrs.visibility = if (prs.isEmpty()) View.GONE else View.VISIBLE
                     }
                 }
             }
         }
     }
-
 
     private fun loadProfilePicture(uriString: String?) {
         if (!uriString.isNullOrEmpty()) {

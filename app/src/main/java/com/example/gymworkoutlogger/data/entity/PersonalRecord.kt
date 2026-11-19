@@ -1,3 +1,4 @@
+// Member 1: Personal Record Entity
 package com.example.gymworkoutlogger.data.entity
 
 import androidx.room.ColumnInfo

@@ -1,3 +1,4 @@
+// Member 2: Exercise List Adapter
 package com.example.gymworkoutlogger.ui.exercise
 
 import android.view.LayoutInflater
